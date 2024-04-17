@@ -1,8 +1,8 @@
 # -*- coding: utf_8 -*-
 """Module for network security analysis."""
 import logging
-from xml.dom import minidom
 from pathlib import Path
+import defusedxml.minidom
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +43,7 @@ def analysis(app_dir, config, is_debuggable, src_type):
         if not netsec_conf:
             return []
         logger.info('Parsing Network Security Config')
-        parsed = minidom.parseString(netsec_conf)
+        parsed = defusedxml.minidom.parseString(netsec_conf)
         finds = []
         # Base Config
         b_cfg = parsed.getElementsByTagName('base-config')

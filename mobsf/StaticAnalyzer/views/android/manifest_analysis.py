@@ -6,7 +6,6 @@ import os
 import subprocess
 import tempfile
 from pathlib import Path
-from xml.dom import minidom
 
 from django.conf import settings
 
@@ -21,6 +20,7 @@ from mobsf.StaticAnalyzer.views.android import (
 
 # pylint: disable=E0401
 from .dvm_permissions import DVM_PERMISSIONS
+import defusedxml.minidom
 
 logger = logging.getLogger(__name__)
 
@@ -45,12 +45,12 @@ def get_manifest(app_path, app_dir, tools_dir, typ, binary):
             manifest = ''
         try:
             logger.info('Parsing AndroidManifest.xml')
-            manifest = minidom.parseString(manifest)
+            manifest = defusedxml.minidom.parseString(manifest)
         except Exception:
             err = ('apktool failed to extract '
                    'AndroidManifest.xml or parsing failed')
             logger.exception(err)
-            manifest = minidom.parseString(
+            manifest = defusedxml.minidom.parseString(
                 (r'<?xml version="1.0" encoding="utf-8"?><manifest xmlns:android='
                  r'"http://schemas.android.com/apk/res/android" '
                  r'android:versionCode="Failed"  '
