@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup as Soup
 ANDROID_PERMISSION_DOCS_URL = ('https://developer.android.com/'
                                'reference/android/Manifest.permission')
 
-response = requests.get(ANDROID_PERMISSION_DOCS_URL)
+response = requests.get(ANDROID_PERMISSION_DOCS_URL, timeout=60)
 content = Soup(response.content, 'html.parser')
 
 online_permissions = {}

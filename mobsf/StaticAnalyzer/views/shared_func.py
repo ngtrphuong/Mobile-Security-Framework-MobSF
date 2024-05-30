@@ -363,7 +363,7 @@ def open_firebase(url):
                            ' AppleWebKit/537.36 (KHTML, like Gecko) '
                            'Chrome/39.0.2171.95 Safari/537.36')}
         resp = requests.get(base_url, headers=headers,
-                            proxies=proxies, verify=verify)
+                            proxies=proxies, verify=verify, timeout=60)
         if resp.status_code == 200:
             return base_url, True
     except Exception:
