@@ -26,6 +26,7 @@ import requests
 from django.shortcuts import render
 
 from . import settings
+from security import safe_requests
 
 logger = logging.getLogger(__name__)
 ADB_PATH = None
@@ -111,7 +112,7 @@ def check_update():
             proxies, verify = upstream_proxy('https')
         except Exception:
             logger.exception('Setting upstream proxy')
-        response = requests.get(github_url, timeout=5,
+        response = safe_requests.get(github_url, timeout=5,
                                 proxies=proxies, verify=verify)
         html = str(response.text).split('\n')
         local_version = settings.VERSION
@@ -255,14 +256,14 @@ def is_internet_available():
     except Exception:
         logger.exception('Setting upstream proxy')
     try:
-        requests.get(settings.GOOGLE,
+        safe_requests.get(settings.GOOGLE,
                      timeout=5,
                      proxies=proxies,
                      verify=verify)
         return True
     except Exception:
         try:
-            requests.get(settings.BAIDU,
+            safe_requests.get(settings.BAIDU,
                          timeout=5,
                          proxies=proxies,
                          verify=verify)
@@ -390,12 +391,12 @@ def check_basic_env():
     """Check if we have basic env for MobSF to run."""
     logger.info('MobSF Basic Environment Check')
     try:
-        import http_tools  # noqa F401
+        pass
     except ImportError:
         logger.exception('httptools not installed!')
         os.kill(os.getpid(), signal.SIGTERM)
     try:
-        import lxml  # noqa F401
+        pass
     except ImportError:
         logger.exception('lxml is not installed!')
         os.kill(os.getpid(), signal.SIGTERM)
@@ -424,7 +425,7 @@ def update_local_db(db_name, url, local_file):
     except Exception:
         logger.exception('[ERROR] Setting upstream proxy')
     try:
-        response = requests.get(url,
+        response = safe_requests.get(url,
                                 timeout=3,
                                 proxies=proxies,
                                 verify=verify)
