@@ -7,6 +7,7 @@ import sys
 import shutil
 
 from mobsf.install.windows.setup import windows_config_local
+from security import safe_command
 
 logger = logging.getLogger(__name__)
 
@@ -75,7 +76,7 @@ def django_operation(cmds, base_dir):
         return
     args = [sys.executable, manage]
     args.extend(cmds)
-    subprocess.call(args)
+    safe_command.run(subprocess.call, args)
 
 
 def make_migrations(base_dir):

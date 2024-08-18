@@ -12,6 +12,7 @@ from os.path import expanduser
 from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable-msg=E0401
 
 import rsa
+from security import safe_command
 
 config = None
 challenge = None
@@ -116,7 +117,7 @@ def binskim(sample, signature):
     ]
 
     # Execute process
-    pipe = subprocess.Popen(subprocess.list2cmdline(params))
+    pipe = safe_command.run(subprocess.Popen, subprocess.list2cmdline(params))
     pipe.wait()  # Wait for the process to finish..
 
     # Open the file and return the json
@@ -165,7 +166,7 @@ def binscope(sample, signature):
     )
 
     # Execute process
-    p = subprocess.Popen(subprocess.list2cmdline(params))
+    p = safe_command.run(subprocess.Popen, subprocess.list2cmdline(params))
     p.wait()  # Wait for the process to finish..
 
     # Open the file and return the json
