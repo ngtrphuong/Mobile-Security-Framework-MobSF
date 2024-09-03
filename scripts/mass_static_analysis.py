@@ -41,7 +41,7 @@ def start_scan(directory, server_url, apikey, rescan='0'):
             response = requests.post(
                 server_url + '/api/v1/upload',
                 files=files,
-                headers={'AUTHORIZATION': apikey})
+                headers={'AUTHORIZATION': apikey}, timeout=60)
             if response.status_code == 200 and 'hash' in response.json():
                 logger.info('[OK] Upload OK: %s', filename)
                 uploaded.append(response.json())
@@ -56,7 +56,7 @@ def start_scan(directory, server_url, apikey, rescan='0'):
         response = requests.post(
             server_url + '/api/v1/scan',
             data=upl,
-            headers={'AUTHORIZATION': apikey})
+            headers={'AUTHORIZATION': apikey}, timeout=60)
         if response.status_code == 200:
             logger.info('[OK] Static Analysis Complete: %s', upl['file_name'])
         else:

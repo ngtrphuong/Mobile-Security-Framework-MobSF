@@ -36,7 +36,7 @@ def download_frida_server(url, version, fname):
         download_dir = Path(settings.DWD_DIR)
         logger.info('Downloading binary %s', fname)
         dwd_loc = download_dir / fname
-        with requests.get(url, stream=True) as r:
+        with requests.get(url, stream=True, timeout=60) as r:
             with LZMAFile(r.raw) as f:
                 with open(dwd_loc, 'wb') as flip:
                     copyfileobj(f, flip)
