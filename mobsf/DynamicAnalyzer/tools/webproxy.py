@@ -4,11 +4,10 @@ from pathlib import Path
 import subprocess
 import time
 
-import requests
-
 from django.conf import settings
 
 from mobsf.MobSF.utils import is_file_exists, upstream_proxy
+from security import safe_requests
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +16,7 @@ def stop_httptools(url):
     """Kill httptools."""
     # Invoke HTTPtools UI Kill Request
     try:
-        requests.get(f'{url}/kill', timeout=5)
+        safe_requests.get(f'{url}/kill', timeout=5)
         logger.info('Killing httptools UI')
     except Exception:
         pass
@@ -27,7 +26,7 @@ def stop_httptools(url):
         http_proxy = url.replace('https://', 'http://')
         headers = {'httptools': 'kill'}
         url = 'http://127.0.0.1'
-        requests.get(url, headers=headers, proxies={
+        safe_requests.get(url, headers=headers, proxies={
                      'http': http_proxy})
         logger.info('Killing httptools Proxy')
     except Exception:

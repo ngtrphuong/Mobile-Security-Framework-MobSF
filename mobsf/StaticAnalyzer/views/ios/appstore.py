@@ -1,11 +1,10 @@
 # -*- coding: utf_8 -*-
 import logging
 
-import requests
-
 from django.conf import settings
 
 from mobsf.MobSF.utils import upstream_proxy
+from security import safe_requests
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +22,7 @@ def app_search(app_id):
     try:
         det = {}
         proxies, verify = upstream_proxy('https')
-        req = requests.get(req_url, headers=headers,
+        req = safe_requests.get(req_url, headers=headers,
                            proxies=proxies, verify=verify)
         resp = req.json()
         if resp['results']:
