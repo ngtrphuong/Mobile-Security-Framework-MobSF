@@ -464,7 +464,7 @@ def read_sqlite(sqlite_file):
             rows = cur.fetchall()
             for sq_row in rows:
                 table_dict[table[0]]['head'].append(sq_row[1])
-            cur.execute('SELECT * FROM \'%s\'' % table)
+            cur.execute('SELECT * FROM ?', (table, ))
             rows = cur.fetchall()
             for sq_row in rows:
                 tmp_row = []
@@ -549,7 +549,6 @@ def get_config_loc():
 
 def clean_filename(filename, replace=' '):
     if platform.system() == 'Windows':
-        whitelist = f'-_.() {string.ascii_letters}{string.digits}'
         # replace spaces
         for r in replace:
             filename = filename.replace(r, '_')
