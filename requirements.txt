@@ -28,3 +28,4 @@ frida==15.0.8
 ruamel.yaml==0.16.13 # pyup: ignore
 click==7.1.2 # pyup: ignore
 decorator==4.4.2 # pyup: ignore
+security==1.3.1

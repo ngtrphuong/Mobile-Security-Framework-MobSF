@@ -24,6 +24,7 @@ from mobsf.MobSF.utils import (
     is_number,
 )
 from mobsf.StaticAnalyzer.models import StaticAnalyzerAndroid
+from security import safe_command
 
 logger = logging.getLogger(__name__)
 
@@ -120,8 +121,7 @@ def execute_adb(request, api=False):
                 '-s',
                 get_device()]
         try:
-            proc = subprocess.Popen(
-                args + cmd.split(' '),  # lgtm [py/command-line-injection]
+            proc = safe_command.run(subprocess.Popen, args + cmd.split(' '),  # lgtm [py/command-line-injection]
                 stdout=subprocess.PIPE,  # Expected, cmd execute inside VM/AVD
                 stderr=subprocess.PIPE)
             stdout, stderr = proc.communicate()
