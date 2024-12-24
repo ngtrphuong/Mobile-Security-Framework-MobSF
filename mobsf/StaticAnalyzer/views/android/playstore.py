@@ -3,13 +3,12 @@ from google_play_scraper import app
 
 from bs4 import BeautifulSoup
 
-import requests
-
 import logging
 
 from django.conf import settings
 
 from mobsf.MobSF.utils import upstream_proxy
+from security import safe_requests
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +44,7 @@ def app_search(app_id):
         'Accept-Encoding': 'deflate, gzip'}
     try:
         proxies, verify = upstream_proxy('https')
-        req = requests.get(req_url,
+        req = safe_requests.get(req_url,
                            auth=(settings.APPMONSTA_API, 'X'),
                            headers=headers,
                            proxies=proxies,
