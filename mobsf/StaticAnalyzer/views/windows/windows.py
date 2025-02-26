@@ -40,6 +40,7 @@ from mobsf.StaticAnalyzer.views.windows.db_interaction import (
     get_context_from_db_entry,
     save_or_update,
 )
+from security import safe_command
 
 logger = logging.getLogger(__name__)
 
@@ -299,7 +300,7 @@ def binskim(name, bin_an_dic, run_local=False, app_dir=None):
         ]
 
         # Execute process
-        pipe = subprocess.Popen(subprocess.list2cmdline(params))
+        pipe = safe_command.run(subprocess.Popen, subprocess.list2cmdline(params))
         pipe.wait()  # Wait for the process to finish..
 
         # Open the file and return the json
@@ -468,7 +469,7 @@ def binscope(name, bin_an_dic, run_local=False, app_dir=None):
         )
 
         # Execute process
-        p = subprocess.Popen(subprocess.list2cmdline(params))
+        p = safe_command.run(subprocess.Popen, subprocess.list2cmdline(params))
         p.wait()  # Wait for the process to finish..
 
         # Open the file and return the json

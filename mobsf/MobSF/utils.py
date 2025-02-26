@@ -26,6 +26,7 @@ import requests
 from django.shortcuts import render
 
 from . import settings
+from security import safe_command
 
 logger = logging.getLogger(__name__)
 ADB_PATH = None
@@ -163,8 +164,7 @@ def find_java_binary():
 
 def run_process(args):
     try:
-        proc = subprocess.Popen(
-            args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        proc = safe_command.run(subprocess.Popen, args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         dat = ''
         while True:
             line = proc.stdout.readline()

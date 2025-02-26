@@ -11,6 +11,7 @@ import subprocess
 from django.conf import settings
 
 from mobsf.MobSF.utils import is_dir_exists
+from security import safe_command
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +37,7 @@ def get_icon(md5, bin_dir, binary):
             # Uncrush PNG. CgBI -> PNG, Mac only
             # https://iphonedevwiki.net/index.php/CgBI_file_format
             try:
-                out = subprocess.run(args, capture_output=True)
+                out = safe_command.run(subprocess.run, args, capture_output=True)
                 if b'libpng error:' in out.stdout:
                     # PNG looks normal
                     raise ValueError('PNG is not CgBI')

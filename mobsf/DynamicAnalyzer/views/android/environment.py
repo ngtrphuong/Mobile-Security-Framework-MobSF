@@ -33,6 +33,7 @@ from mobsf.MobSF.utils import (
     python_list,
 )
 from mobsf.StaticAnalyzer.models import StaticAnalyzerAndroid
+from security import safe_command
 
 logger = logging.getLogger(__name__)
 ANDROID_API_SUPPORTED = 29
@@ -270,7 +271,7 @@ class Environment:
         logger.info('Enabling ADB Reverse TCP on %s', proxy_port)
         tcp = 'tcp:{}'.format(proxy_port)
         try:
-            proc = subprocess.Popen([get_adb(),
+            proc = safe_command.run(subprocess.Popen, [get_adb(),
                                      '-s', self.identifier,
                                      'reverse', tcp, tcp],
                                     stdout=subprocess.PIPE,
@@ -484,7 +485,7 @@ class Environment:
             err_msg = ('VM\'s /system is not writable. '
                        'This VM cannot be used for '
                        'Dynamic Analysis.')
-            proc = subprocess.Popen([get_adb(),
+            proc = safe_command.run(subprocess.Popen, [get_adb(),
                                      '-s', self.identifier,
                                      'shell',
                                      'touch',
@@ -689,7 +690,7 @@ class Environment:
                     self.identifier,
                     'shell',
                     '/system/fd_server']
-            subprocess.call(argz, stdout=fnull, stderr=subprocess.STDOUT)
+            safe_command.run(subprocess.call, argz, stdout=fnull, stderr=subprocess.STDOUT)
         trd = threading.Thread(target=start_frida)
         trd.daemon = True
         trd.start()

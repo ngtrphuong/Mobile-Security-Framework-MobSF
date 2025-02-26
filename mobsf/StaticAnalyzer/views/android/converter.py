@@ -17,6 +17,7 @@ from mobsf.MobSF.utils import (
     find_java_binary,
     is_file_exists,
 )
+from security import safe_command
 
 
 logger = logging.getLogger(__name__)
@@ -90,7 +91,7 @@ def apk_2_java(app_path, app_dir, tools_dir):
             app_path,
         ]
         fnull = open(os.devnull, 'w')
-        subprocess.call(args,
+        safe_command.run(subprocess.call, args,
                         stdout=fnull,
                         stderr=subprocess.STDOUT)
     except Exception:
