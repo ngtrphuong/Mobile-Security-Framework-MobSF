@@ -39,7 +39,7 @@ def fetch_html(url):
                            headers=headers,
                            proxies=proxies,
                            verify=verify,
-                           stream=True)
+                           stream=True, timeout=60)
         if res.status_code == 200:
             return BeautifulSoup(res.text, features='lxml')
     except Exception:
@@ -50,7 +50,7 @@ def fetch_html(url):
 def download_file(url, outfile):
     try:
         logger.info('Downloading APK...')
-        with requests.get(url, stream=True) as r:
+        with requests.get(url, stream=True, timeout=60) as r:
             r.raise_for_status()
             with open(outfile, 'wb') as f:
                 for chunk in r.iter_content(chunk_size=8192):
