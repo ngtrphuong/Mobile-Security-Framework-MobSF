@@ -118,10 +118,8 @@ def binskim(sample, signature):
     # Execute process
     pipe = subprocess.Popen(subprocess.list2cmdline(params))
     pipe.wait()  # Wait for the process to finish..
-
-    # Open the file and return the json
-    out_file = open(output_d)
-    return out_file.read()
+    with open(output_d) as out_file:
+        return out_file.read()
 
 
 def binscope(sample, signature):
@@ -167,10 +165,8 @@ def binscope(sample, signature):
     # Execute process
     p = subprocess.Popen(subprocess.list2cmdline(params))
     p.wait()  # Wait for the process to finish..
-
-    # Open the file and return the json
-    f = open(output[1])
-    return f.read()
+    with open(output[1]) as f:
+        return f.read()
 
 
 if __name__ == '__main__':
