@@ -301,10 +301,8 @@ def binskim(name, bin_an_dic, run_local=False, app_dir=None):
         # Execute process
         pipe = subprocess.Popen(subprocess.list2cmdline(params))
         pipe.wait()  # Wait for the process to finish..
-
-        # Open the file and return the json
-        out_file = open(output_d)
-        output = json.loads(out_file.read())
+        with open(output_d) as out_file:
+            output = json.loads(out_file.read())
     else:
         # Analyse the sample
         response = proxy.binskim(name, _get_token())
@@ -470,10 +468,8 @@ def binscope(name, bin_an_dic, run_local=False, app_dir=None):
         # Execute process
         p = subprocess.Popen(subprocess.list2cmdline(params))
         p.wait()  # Wait for the process to finish..
-
-        # Open the file and return the json
-        f = open(output[1])
-        response = f.read()
+        with open(output[1]) as f:
+            response = f.read()
     else:
         # Analyse the sample via rpc
         response = proxy.binscope(name, _get_token())
