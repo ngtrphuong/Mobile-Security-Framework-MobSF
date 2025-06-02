@@ -44,6 +44,7 @@ from mobsf.StaticAnalyzer.views.ios.db_interaction import (
     get_context_from_db_entry as idb)
 from mobsf.StaticAnalyzer.views.windows.db_interaction import (
     get_context_from_db_entry as wdb)
+from security import safe_command
 
 logger = logging.getLogger(__name__)
 try:
@@ -97,8 +98,7 @@ def unzip(app_path, ext_path):
             logger.info('Using the Default OS Unzip Utility.')
             try:
                 unzip_b = shutil.which('unzip')
-                subprocess.call(
-                    [unzip_b, '-o', '-q', app_path, '-d', ext_path])
+                safe_command.run(subprocess.call, [unzip_b, '-o', '-q', app_path, '-d', ext_path])
                 dat = subprocess.check_output([unzip_b, '-qq', '-l', app_path])
                 dat = dat.decode('utf-8').split('\n')
                 files_det = ['Length   Date   Time   Name']

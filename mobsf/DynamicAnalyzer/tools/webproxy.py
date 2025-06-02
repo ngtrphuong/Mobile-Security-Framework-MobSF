@@ -9,6 +9,7 @@ import requests
 from django.conf import settings
 
 from mobsf.MobSF.utils import is_file_exists, upstream_proxy
+from security import safe_command
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +44,7 @@ def start_proxy(port, project):
     if proxies['http']:
         argz.extend(['-u', proxies['http']])
     fnull = open(os.devnull, 'w')
-    subprocess.Popen(argz, stdout=fnull, stderr=subprocess.STDOUT)
+    safe_command.run(subprocess.Popen, argz, stdout=fnull, stderr=subprocess.STDOUT)
 
 
 def start_httptools_ui(port):
@@ -56,7 +57,7 @@ def start_httptools_ui(port):
 def create_ca():
     """Generate CA on first run."""
     argz = ['mitmdump', '-n']
-    subprocess.Popen(argz,
+    safe_command.run(subprocess.Popen, argz,
                      stdin=None,
                      stdout=None,
                      stderr=None,
