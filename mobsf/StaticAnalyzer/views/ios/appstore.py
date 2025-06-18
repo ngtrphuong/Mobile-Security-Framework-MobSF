@@ -24,7 +24,7 @@ def app_search(app_id):
         det = {}
         proxies, verify = upstream_proxy('https')
         req = requests.get(req_url, headers=headers,
-                           proxies=proxies, verify=verify)
+                           proxies=proxies, verify=verify, timeout=60)
         resp = req.json()
         if resp['results']:
             det = resp['results'][0]

@@ -50,7 +50,7 @@ def app_search(app_id):
                            headers=headers,
                            proxies=proxies,
                            verify=verify,
-                           stream=True)
+                           stream=True, timeout=60)
         resp = req.json()
         det['title'] = resp['app_name']
         det['score'] = resp.get('all_rating', '')
