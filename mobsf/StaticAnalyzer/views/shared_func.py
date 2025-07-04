@@ -17,8 +17,6 @@ import zipfile
 from urllib.parse import urlparse
 from pathlib import Path
 
-import requests
-
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.utils import timezone
@@ -44,6 +42,7 @@ from mobsf.StaticAnalyzer.views.ios.db_interaction import (
     get_context_from_db_entry as idb)
 from mobsf.StaticAnalyzer.views.windows.db_interaction import (
     get_context_from_db_entry as wdb)
+from security import safe_requests
 
 logger = logging.getLogger(__name__)
 try:
@@ -362,7 +361,7 @@ def open_firebase(url):
             'User-Agent': ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1)'
                            ' AppleWebKit/537.36 (KHTML, like Gecko) '
                            'Chrome/39.0.2171.95 Safari/537.36')}
-        resp = requests.get(base_url, headers=headers,
+        resp = safe_requests.get(base_url, headers=headers,
                             proxies=proxies, verify=verify)
         if resp.status_code == 200:
             return base_url, True
