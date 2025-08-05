@@ -3,7 +3,6 @@
 import json
 import logging
 import os
-import random
 import re
 import subprocess
 import threading
@@ -24,6 +23,7 @@ from mobsf.MobSF.utils import (
     is_number,
 )
 from mobsf.StaticAnalyzer.models import StaticAnalyzerAndroid
+import secrets
 
 logger = logging.getLogger(__name__)
 
@@ -191,7 +191,7 @@ def take_screenshot(request, api=False):
         if not is_md5(bin_hash):
             return invalid_params(api)
         data = {}
-        rand_int = random.randint(1, 1000000)
+        rand_int = secrets.SystemRandom().randint(1, 1000000)
         screen_dir = os.path.join(settings.UPLD_DIR,
                                   bin_hash + '/screenshots-apk/')
         if not os.path.exists(screen_dir):
